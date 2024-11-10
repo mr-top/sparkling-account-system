@@ -41,6 +41,76 @@ const methods = {
     }
   },
 
+  async updateBasic (username, description, userId) {
+    if (await this.usernameExists(username, userId)) {
+      return {msg: 'Username already exists'}
+    } 
+
+    const result = await query('UPDATE users SET username = $1, description = $2 WHERE id = $3', username, description, userId);
+
+    if (result && result.rowCount > 0) {
+      const userInfo = await this.getUserById(userId);
+      return {success: true, msg: 'Changes to basic saved', username: userInfo.username, description: userInfo.description}
+    } else {
+      return {msg: 'Could not save changes'}
+    }
+  },
+
+  async updatePassword (oldPassword, password, userId) {
+    const userInfo = await this.getUserById(userId);
+
+    if (await bcrypt.compare(oldPassword, userInfo.password)) {
+      const hashedPassword = await generatePassword(password);
+      const result = await query('UPDATE users SET password = $1 WHERE id = $2', hashedPassword, userId);
+
+      if (result && result.rowCount > 0) {
+        return {success: true, msg: 'Password has been changed'}
+      } else {
+        return {msg: 'Password could not be changed'}
+      }
+    } else {
+      return {msg: 'Previous password not correct'}
+    }
+  },
+
+  async toggleVisibility (userId) {
+    const result = await query('UPDATE users SET visible = NOT visible WHERE id = $1', userId);
+
+    if (result && result.rowCount > 0) {
+      const userInfo = await this.getUserById(userId);
+
+      if (userInfo.visible) {
+        return {success: true, msg: 'Profile set to visible'}
+      } else {
+        return {success: true, msg: 'Profile set to invisible'}
+      }
+    } else {
+      return {msg: 'Could not toggle visibility'}
+    }
+  },
+
+  async removeUser (username, password, userId) {
+    const userInfo = await this.getUserById(userId);
+
+    if (await bcrypt.compare(password, userInfo.password)) {
+      const result = await query('DROP FROM users WHERE username = $1 AND id = $2', username, userId);
+
+      if (result && result.rowCount > 0) {
+        return {success: true, msg: 'User has been removed'}
+      } else {
+        return {msg: 'User could not be removed'}
+      }
+    } else {
+      return {msg: 'Password not correct'}
+    }
+  },
+
+  async getUserById (userId) {
+    const result = await query('SELECT * FROM users WHERE id = $1', userId);
+
+    return result.rows[0];
+  },
+
   async usernameExists (username, userId) {
     const result = await query(`SELECT * FROM users WHERE username = $1 ${userId ? 'AND id != $2' : ''}`, username, userId);
 

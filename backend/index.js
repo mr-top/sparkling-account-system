@@ -71,8 +71,43 @@ app.post('/register', async (req, res) => {
   res.json(result);
 });
 
-// valid api requests
+app.post('/settings/basic', requiresAuth, async (req, res) => {
+  const {username, description} = req.body;
+
+  const result = await postgre.updateBasic(username, description, res.locals.userId);
+
+  res.json(result);
+});
+
+app.post('/settings/security', requiresAuth, async (req, res) => {
+  const {oldPassword, password} = req.body;
+
+  const result = await postgre.updatePassword(oldPassword, password, res.locals.userId);
+
+  return result;
+});
+
+app.post('/settings/visible', requiresAuth, async (req, res) => {
+  const result = await postgre.toggleVisibility(res.locals.userId);
+
+  return result;
+});
+
+app.post('/settings/removal', requiresAuth, async (req, res) => {
+  const {username, password} = req.body;
+
+  const result = await postgre.removeUser(username, password, res.locals.userId);
+
+  res.json(result);
+});
+
+app.post('/settings/logout', requiresAuth, async (req, res) => {
+  delete req.session.userId;
+  delete req.session.signedIn;
+
+  res.json({success: true, msg: 'Logged out'})
+});
 
 app.listen(port, () => {
   console.log(`Started listening at ${port}`);
-})
+});
