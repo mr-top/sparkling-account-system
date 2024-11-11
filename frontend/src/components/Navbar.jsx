@@ -1,44 +1,63 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
-import { ThemeContext } from '../context/ThemeContext';
-import { PrimaryButton, SecondaryButton } from './Buttons';
+import ToggleTheme from './ToggleTheme';
 
 function Navbar() {
-  const user = useContext(UserContext);
-  const theme = useContext(ThemeContext);
-  const navigate = useNavigate();
-
-  const themeClass = theme.darkOn ? 'bg-zinc-900 text-slate-100' : 'bg-slate-100 text-zinc-900';
+  let user;
 
   let buttons;
 
-  if (user.userLogged) {
-    buttons = 
-      (<>
-        <PrimaryButton onClick={() => navigate('/profile')}>Profile</PrimaryButton>
-        <SecondaryButton onClick={() => { user.handleLogout(); navigate('/home') }}>Log Out</SecondaryButton>
-      </>);
+  if (user) {
+    buttons = (
+      <>
+        <button className="btn">Profile</button>
+        <button className="btn">Logout</button>
+      </>
+    )
   } else {
-    buttons = 
-      (<>
-        <SecondaryButton onClick={() => theme.toggleTheme()}>Theme</SecondaryButton>
-        <PrimaryButton onClick={() => navigate('/login')}>Log In</PrimaryButton>
-        <SecondaryButton onClick={() => navigate('/register')}>Register</SecondaryButton>
-      </>);
+    buttons = (
+      <>
+        <ToggleTheme />
+        <button className="btn">Log In</button>
+        <button className="btn">Register</button>
+      </>
+    )
   }
 
+
+
   return (
-    <nav className={`${themeClass} flex flex-row px-4 py-2 flex-initial`}>
-
-      <div className="flex-initial flex items-center">
-        <p className="sm:text-xl">{theme.darkOn ? 'Dark' : 'Light'} Sparkling Water Co.</p>
+    <nav className="flex-none bg-primary-content navbar">
+      <div className="navbar-start">
+        <p>Sparkling Account System Co.</p>
       </div>
+      <div className="navbar-center">
 
-      <div className='flex-auto flex justify-end space-x-3'>
-        {buttons}
       </div>
-
+      <div className="navbar-end">
+        <div className='hidden sm:flex space-x-3'>
+          {buttons}
+        </div>
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="btn btn-ghost sm:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-primary-content rounded-box z-[1] mt-3 w-30 p-2 shadow space-y-3">
+            {buttons}
+          </ul>
+        </div>
+      </div>
     </nav>
   )
 }
