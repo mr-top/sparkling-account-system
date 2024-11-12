@@ -1,4 +1,5 @@
 import ToggleTheme from './ToggleTheme';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   let user;
@@ -8,16 +9,16 @@ function Navbar() {
   if (user) {
     buttons = (
       <>
-        <button className="btn">Profile</button>
-        <button className="btn">Logout</button>
+        <Link to='/profile'><button className="btn btn-primary w-[6.5rem]">Profile</button></Link>
+        <Link to='/logout'><button className="btn w-[6.5rem]">Logout</button></Link>
       </>
     )
   } else {
     buttons = (
       <>
         <ToggleTheme />
-        <button className="btn">Log In</button>
-        <button className="btn">Register</button>
+        <Link to='/login'><button className="btn btn-primary w-[6.5rem]">Log In</button></Link>
+        <Link to='/register'><button className="btn w-[6.5rem]">Register</button></Link>
       </>
     )
   }
