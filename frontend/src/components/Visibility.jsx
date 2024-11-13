@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import axios from "axios";
+const env = process.env;
 
 function Visibility(props) {
   const user = useContext(UserContext);
@@ -14,7 +15,7 @@ function Visibility(props) {
     setMessage([false, 'Toggling...']);
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5020/settings/visible')
+    axios.post(`http://localhost:${process.back_port}/settings/visible`)
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

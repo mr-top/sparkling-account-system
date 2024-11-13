@@ -6,9 +6,9 @@ const morgan = require('morgan');
 
 const postgre = require('./lib/postgre');
 
-require('dotenv').config();
+require('dotenv').config({path: '../.env'});
 const env = process.env;
-const port = env.port;
+const port = env.back_port;
 
 const app = express();
 
