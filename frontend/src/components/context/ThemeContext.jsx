@@ -3,13 +3,13 @@ import { createContext, useEffect, useState } from "react";
 const ThemeContext = createContext();
 
 function ThemeProvider (props) {
-  const [theme, setTheme]  = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme]  = useState(localStorage.getItem('theme') || 'winter');
 
   function handleToggle(e){
     if (e.target.checked) {
-      setTheme('dark');
+      setTheme('myDark');
     } else {
-      setTheme('light');
+      setTheme('myLight');
     }
   }
 

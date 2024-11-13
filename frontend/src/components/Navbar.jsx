@@ -1,16 +1,21 @@
 import ToggleTheme from './ToggleTheme';
+import { useContext } from 'react';
+import { UserContext } from './context/UserContext';
 import { Link } from 'react-router-dom';
+import Logout from './Logout';
 
 function Navbar() {
-  let user;
+  const user = useContext(UserContext);
+
+  const info = user.getInfo();
 
   let buttons;
 
-  if (user) {
+  if (info.logged) {
     buttons = (
       <>
         <Link to='/profile'><button className="btn btn-primary w-[6.5rem]">Profile</button></Link>
-        <Link to='/logout'><button className="btn w-[6.5rem]">Logout</button></Link>
+        <Logout/>
       </>
     )
   } else {
@@ -26,7 +31,7 @@ function Navbar() {
 
 
   return (
-    <nav className="flex-none bg-primary-content navbar">
+    <nav className="flex-none bg-base-100 navbar">
       <div className="navbar-start">
         <p>Sparkling Account System Co.</p>
       </div>

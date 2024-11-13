@@ -2,12 +2,13 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from '../context/UserContext';
 
-function ProtectedRoute () {
+function ProtectedRoute (props) {
   const user = useContext(UserContext);
   const info = user.getInfo();
 
-  console.log(info);
-
+  if (!info.logged) {
+    props.setAlert("Sorry. You need to be logged in");
+  }
 
   return info.logged ? <Outlet/> : <Navigate to='/login'/>;
 }

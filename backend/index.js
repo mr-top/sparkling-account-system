@@ -23,7 +23,8 @@ app.use(session(
   {
     cookie: {
       httpOnly: true,
-      maxAge: 1000 * 60 * 1 * 5 // 5 minute
+      maxAge: 1000 * 60 * 1 * 5, // 5 minute
+      sameSite: true
     },
     name: 'test-sesh-id',
     resave: false,
@@ -80,17 +81,17 @@ app.post('/settings/basic', requiresAuth, async (req, res) => {
 });
 
 app.post('/settings/security', requiresAuth, async (req, res) => {
-  const {oldPassword, password} = req.body;
+  const {oldPassword, newPassword} = req.body;
 
-  const result = await postgre.updatePassword(oldPassword, password, res.locals.userId);
+  const result = await postgre.updatePassword(oldPassword, newPassword, res.locals.userId);
 
-  return result;
+  res.json(result);
 });
 
 app.post('/settings/visible', requiresAuth, async (req, res) => {
   const result = await postgre.toggleVisibility(res.locals.userId);
 
-  return result;
+  res.json(result);
 });
 
 app.post('/settings/removal', requiresAuth, async (req, res) => {
@@ -98,14 +99,19 @@ app.post('/settings/removal', requiresAuth, async (req, res) => {
 
   const result = await postgre.removeUser(username, password, res.locals.userId);
 
+  if (result.success) {
+    delete req.session.userId;
+    delete req.session.signedIn;
+  }
+
   res.json(result);
 });
 
-app.post('/settings/logout', requiresAuth, async (req, res) => {
+app.get('/settings/logout', requiresAuth, async (req, res) => {
   delete req.session.userId;
   delete req.session.signedIn;
 
-  res.json({success: true, msg: 'Logged out'})
+  res.json({logout: true, msg: 'Logged out'})
 });
 
 app.listen(port, () => {

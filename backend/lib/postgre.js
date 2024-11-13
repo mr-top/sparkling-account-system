@@ -17,7 +17,7 @@ const methods = {
 
     const hashedPassword = await generatePassword(password);
 
-    const result = await query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', username, email, hashedPassword);
+    const result = await query('INSERT INTO users (username, email, password, active) VALUES ($1, $2, $3, $4)', username, email, hashedPassword, true);
 
     if (result && result.rowCount > 0) {
       return {success: true, msg: 'Account was registered'}
@@ -62,7 +62,7 @@ const methods = {
     if (await bcrypt.compare(oldPassword, userInfo.password)) {
       const hashedPassword = await generatePassword(password);
       const result = await query('UPDATE users SET password = $1 WHERE id = $2', hashedPassword, userId);
-
+  
       if (result && result.rowCount > 0) {
         return {success: true, msg: 'Password has been changed'}
       } else {
@@ -93,12 +93,12 @@ const methods = {
     const userInfo = await this.getUserById(userId);
 
     if (await bcrypt.compare(password, userInfo.password)) {
-      const result = await query('DROP FROM users WHERE username = $1 AND id = $2', username, userId);
+      const result = await query('DELETE FROM users WHERE username = $1 AND id = $2', username, userId);
 
       if (result && result.rowCount > 0) {
         return {success: true, msg: 'User has been removed'}
       } else {
-        return {msg: 'User could not be removed'}
+        return {msg: 'Username not correct'}
       }
     } else {
       return {msg: 'Password not correct'}
@@ -112,7 +112,13 @@ const methods = {
   },
 
   async usernameExists (username, userId) {
-    const result = await query(`SELECT * FROM users WHERE username = $1 ${userId ? 'AND id != $2' : ''}`, username, userId);
+    let result;
+    if (userId) {
+      result = await query(`SELECT * FROM users WHERE username = $1 AND id != $2`, username, userId);
+    } else {
+      result = await query('SELECT * FROM users WHERE username = $1', username);
+    }
+    
 
     if (result && result.rowCount > 0) {
       return true;
@@ -120,7 +126,12 @@ const methods = {
   },
 
   async emailExists (email, userId) {
-    const result = await query(`SELECT * FROM users WHERE email = $1 ${userId ? 'AND id != $2' : ''}`, email, userId);
+    let result;
+    if (userId) {
+      result = await query(`SELECT * FROM users WHERE email = $1 AND id != $2`, email, userId);
+    } else {
+      result = await query('SELECT * FROM users WHERE email = $1', email);
+    }
 
     if (result && result.rowCount > 0) {
       return true;

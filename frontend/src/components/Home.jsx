@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <div className="bg-primary-content my-10 px-10 py-5 rounded-md space-y-5">
+    <div className="bg-base-100 my-10 px-10 py-5 rounded-md space-y-5">
       <p className="text-2xl">Account session demo</p>
       <div className="space-y-2">
         <div>

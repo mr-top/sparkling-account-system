@@ -1,24 +1,26 @@
 import { TextField } from "./TextField";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { validateUsername, validateEmail, validatePassword, validateAll } from '../lib/verifyInput';
 import { UserContext } from "./context/UserContext";
-import { validateUsername, validatePassword, validateAll } from '../lib/verifyInput';
 import axios from 'axios';
 
-function Login(props) {
+function Register(props) {
   const user = useContext(UserContext);
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState([]);
   const [inputsFailed, setInputsFailed] = useState(false);
   const navigate = useNavigate();
 
-  function handleLoginSubmit (e) {
+  function handleRegisterSubmit (e) {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!validateAll(username, 'example@example.com', password)) {
+    if (!validateAll(username, email, password) || confirmPassword !== password) {
       setInputsFailed(true);
       setIsLoading(false);
       return;
@@ -27,20 +29,19 @@ function Login(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5020/login', {username, password})
+    axios.post('http://localhost:5020/register', {username, email, password})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);
           setTimeout(() => {
-            user.login(result.data.username, result.data.description);
-            navigate('/home');
+            navigate('/login');
           }, 3000);
         } else if (result.data.logout) {
           props.setAlert('Sorry. We had to log you out as the session expired');
           user.logout();
           navigate('/home');
         } else {
-          setMessage([false, result.data.msg || 'Login Failed']);
+          setMessage([false, result.data.msg || 'Register Failed']);
         }
       })
       .catch(error => {
@@ -54,17 +55,19 @@ function Login(props) {
 
   return (
     <div className="bg-base-100 my-10 px-10 py-5 rounded-md space-y-5">
-      <p className="text-2xl">Log in to your account</p>
-      <form onSubmit={handleLoginSubmit} className="space-y-2" id='login-form'>
+      <p className="text-2xl">Create an account</p>
+      <form onSubmit={handleRegisterSubmit} className="space-y-2" id='register-form'>
         <TextField invalid={inputsFailed && !validateUsername(username)} value={username} type='text' labelValue='Username' inputChange={text => setUsername(text)}/>
+        <TextField invalid={inputsFailed && !validateEmail(email)} value={email} type='text' labelValue='Email' inputChange={text => setEmail(text)}/>
         <TextField invalid={inputsFailed && !validatePassword(password)} value={password} type='password' labelValue='Password' inputChange={text => setPassword(text)}/>
+        <TextField invalid={inputsFailed && (!validatePassword(confirmPassword) || confirmPassword !== password)} value={confirmPassword} type='password' labelValue='Confirm password' inputChange={text => setConfirmPassword(text)}/>
       </form>
       <div className="space-x-5 flex flex-row">
-        <button className="btn btn-primary flex-initial" disabled={isLoading} form="login-form">Log in</button>
+        <button className="btn btn-primary flex-initial" disabled={isLoading} form="register-form">Register</button>
         {message.length > 0 && <p className={`${message[0] ? 'text-green-700' : 'text-red-700'} flex-auto text-center`}>{message[1]}</p>}
       </div>
     </div>
   )
 }
 
-export default Login;
+export default Register;
