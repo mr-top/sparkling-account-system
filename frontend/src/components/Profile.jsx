@@ -37,8 +37,8 @@ function Profile(props) {
   }, []);
 
   return (
-    <div className="flex flex-col sm:flex-row space-x-5 sm:space-x-0">
-      <div className="bg-base-100 w-[22rem] my-10 px-10 py-5 rounded-md space-y-4">
+    <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-5">
+      <div className="bg-base-100 w-[22rem] h-[20rem] my-10 px-10 py-5 rounded-md space-y-4">
         <div className="flex flex-row">
           <img className="rounded-full w-[6rem] h-[6rem] flex-initial border-2 border-primary" src='https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2281862025.jpg' alt='anonymous picture' />
           <div className="flex-1 px-4">

@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Settings from './components/Settings';
 import Profile from './components/Profile';
+import UsersBrowser from './components/UsersBrowser';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
                 <Route path='/register' element={<Register setAlert={setAlert}/>}/>
               </Route>
               <Route path='/profile/:id' element={<Profile setAlert={setAlert}/>}/>
+              <Route path='/users' element={<UsersBrowser classes={'mb-10 mt-10 px-10 py-5 rounded-md space-y-5 sm:w-[22rem] flex flex-col'} />}/>
               <Route path='/home' element={<Home />} />
             </Routes>
           </div>

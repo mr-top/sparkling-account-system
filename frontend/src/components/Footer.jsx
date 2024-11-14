@@ -10,6 +10,7 @@ function Footer() {
         <Link to='/register'><p className="link link-hover">Register</p></Link>
         <Link to='/home'><p className="link link-hover">Home</p></Link>
         <Link to='/settings'><p className="link link-hover">Settings</p></Link>
+        <Link to='/users'><p className="link link-hover">Users</p></Link>
       </nav>
       <nav>
         <h6 className="footer-title">Links</h6>
