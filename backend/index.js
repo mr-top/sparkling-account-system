@@ -47,8 +47,12 @@ function requiresAuth (req, res, next) {
   }
 }
 
-app.get('/feedback', (req, res) => {
-  res.json({text: 'Here is a feedback from the server'});
+app.post('/profile', async (req, res) => {
+  const {inputId} = req.body;
+
+  const result = await postgre.user(inputId);
+
+  res.json(result);
 });
 
 app.post('/login', async (req, res) => {

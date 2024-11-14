@@ -8,8 +8,8 @@ function Settings (props) {
   const [selected, setSelected] = useState('basic');
 
   return (
-    <div className="bg-base-100 w-[40rem] my-10 px-10 py-5 rounded-md flex flex-col sm:flex-row">
-      <div className="flex flex-col">
+    <div className="bg-base-100 min-w-[20rem] sm:min-w-[33rem] my-10 px-10 py-5 rounded-md flex flex-col space-y-4 sm:space-y-0 sm:flex-row">
+      <div className="flex flex-col space-y-4">
         <button onClick={() => setSelected('basic')} className={`${selected === 'basic' ? 'font-semibold' : ''} text-start`}>Basic information</button>
         <button onClick={() => setSelected('security')} className={`${selected === 'security' ? 'font-semibold' : ''} text-start`}>Security & Privacy</button>
         <button onClick={() => setSelected('websettings')} className={`${selected === 'websettings' ? 'font-semibold' : ''} text-start`}>Web settings</button>

@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
+const env = process.env;
 
 function Basic(props) {
   const user = useContext(UserContext);
@@ -26,7 +27,7 @@ function Basic(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5020/settings/basic', {username, description})
+    axios.post(`http://localhost:${env.back_port}/settings/basic`, {username, description})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

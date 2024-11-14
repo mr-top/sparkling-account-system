@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import { validateUsername, validatePassword, validateAll } from '../lib/verifyInput';
 import axios from 'axios';
+const env = process.env;
 
 function Login(props) {
   const user = useContext(UserContext);
@@ -27,7 +28,7 @@ function Login(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5020/login', {username, password})
+    axios.post(`http://localhost:${env.back_port}/login`, {username, password})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

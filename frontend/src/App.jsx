@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import Settings from './components/Settings';
+import Profile from './components/Profile';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route path='/login' element={<Login setAlert={setAlert}/>} />
                 <Route path='/register' element={<Register setAlert={setAlert}/>}/>
               </Route>
+              <Route path='/profile/:id' element={<Profile setAlert={setAlert}/>}/>
               <Route path='/home' element={<Home />} />
             </Routes>
           </div>

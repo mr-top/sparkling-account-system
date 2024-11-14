@@ -5,6 +5,7 @@ import { UserContext } from '../context/UserContext';
 import { validatePassword } from '../../lib/verifyInput'; 
 import Visibility from '../Visibility';
 import axios from 'axios';
+const env = process.env;
 
 function Security (props) {
   const user = useContext(UserContext);
@@ -27,7 +28,7 @@ function Security (props) {
     }
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5020/settings/security', {oldPassword, newPassword})
+    axios.post(`http://localhost:${env.back_port}/settings/security`, {oldPassword, newPassword})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

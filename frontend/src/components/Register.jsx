@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { validateUsername, validateEmail, validatePassword, validateAll } from '../lib/verifyInput';
 import { UserContext } from "./context/UserContext";
 import axios from 'axios';
+const env = process.env;
 
 function Register(props) {
   const user = useContext(UserContext);
@@ -29,7 +30,7 @@ function Register(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5020/register', {username, email, password})
+    axios.post(`http://localhost:${env.back_port}/register`, {username, email, password})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

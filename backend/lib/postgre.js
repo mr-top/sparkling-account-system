@@ -105,6 +105,22 @@ const methods = {
     }
   },
 
+  async user (userId) {
+    const result = await query('SELECT * FROM users WHERE id = $1 AND visible = true', userId);
+
+    if (result && result.rowCount > 0) {
+      const user = result.rows[0];
+      const userInfo = {username: user.username, description: user.description}; 
+      if (user.visible) {
+        return {success: true, userInfo}
+      } else {
+        return {msg: 'User is not visible'}
+      }
+    } else {
+      return {msg: 'User not found by id'}
+    }
+  },
+
   async getUserById (userId) {
     const result = await query('SELECT * FROM users WHERE id = $1', userId);
 
