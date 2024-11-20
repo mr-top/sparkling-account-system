@@ -33,7 +33,7 @@ function Login(props) {
         if (result.data.success) {
           setMessage([true, result.data.msg]);
           setTimeout(() => {
-            user.login(result.data.username, result.data.description);
+            user.login(result.data.username, result.data.description, result.data.id);
             navigate('/home');
           }, 3000);
         } else if (result.data.logout) {

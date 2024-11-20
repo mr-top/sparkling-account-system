@@ -6,21 +6,24 @@ function UserProvider (props) {
   const [logged, setLogged] = useState(localStorage.getItem('logged') === 'true');
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
   const [description, setDescription] = useState(localStorage.getItem('description') || '');
+  const [userId, setUserId] = useState(localStorage.getItem('userId') || '');
 
-  function login (username, description) {
+  function login (username, description, userId) {
     setLogged(true);
     setUsername(username);
     setDescription(description);
+    setUserId(userId);
   }
 
   function logout () {
     setLogged(false);
     setUsername('');
     setDescription('');
+    setUserId('');
   }
 
   function getInfo () {
-    return {logged, username, description}
+    return {logged, username, description, userId}
   }
 
   useEffect(() => {
@@ -34,6 +37,10 @@ function UserProvider (props) {
   useEffect(() => {
     localStorage.setItem('description', String(description));
   }, [description]);
+
+  useEffect(() => {
+    localStorage.setItem('userId', String(userId));
+  }, [userId]);
 
   return (
     <UserContext.Provider value={{login, logout, getInfo}}>

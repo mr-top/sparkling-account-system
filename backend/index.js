@@ -55,6 +55,14 @@ app.post('/profile', async (req, res) => {
   res.json(result);
 });
 
+app.post('/users', async (req, res) => {
+  const {page} = req.body;
+
+  const result = await postgre.getUsers(page);
+
+  res.json(result);
+});
+
 app.post('/login', async (req, res) => {
   const {username, password} = req.body;
 

@@ -13,6 +13,8 @@ function Profile(props) {
   useLayoutEffect(() => {
     const inputId = Number(id);
 
+    console.log(inputId);
+
     if (!(inputId > 0)) {
       props.setAlert('Invalid input');
       navigate('/home');

@@ -19,7 +19,7 @@ function Basic(props) {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!validateUsername(username) || description.length >= 300){
+    if (!validateUsername(username) || description.length >= 300) {
       setIsLoading(false);
       return;
     }
@@ -27,11 +27,11 @@ function Basic(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/settings/basic`, {username, description})
+    axios.post(`http://localhost:${env.back_port}/settings/basic`, { username, description })
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);
-          user.login(result.data.username, result.data.description);
+          user.login(result.data.username, result.data.description, result.data.id);
         } else if (result.data.logout) {
           props.setAlert('Sorry. We had to log you out as the session expired');
           user.logout();

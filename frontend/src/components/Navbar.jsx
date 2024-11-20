@@ -14,8 +14,8 @@ function Navbar() {
   if (info.logged) {
     buttons = (
       <>
-        <Link to='/profile'><button className="btn btn-primary w-[6.5rem]">Profile</button></Link>
-        <Logout/>
+        <Link to={`/profile/${info.userId}`} reloadDocument={true}><button className="btn btn-primary w-[6.5rem]">Profile</button></Link>
+        <Logout />
       </>
     )
   } else {
