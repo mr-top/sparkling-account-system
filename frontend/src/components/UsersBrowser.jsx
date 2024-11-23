@@ -14,7 +14,7 @@ function UsersBrowser(props) {
     setIsLoading(true);
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/users`, { page })
+    axios.post(`${env.back_host}/users`, { page })
       .then(result => {
         if (result.data.success) {
           setUsers(result.data.users);

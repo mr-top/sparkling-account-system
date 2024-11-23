@@ -13,7 +13,7 @@ function Logout () {
     setIsLoading(true);
 
     axios.defaults.withCredentials = true;
-    axios.get(`http://localhost:${env.back_port}/settings/logout`, {})
+    axios.get(`${env.back_host}/settings/logout`, {})
       .then(result => {
         if (result.data.logout) {
           user.logout();

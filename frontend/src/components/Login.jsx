@@ -28,7 +28,7 @@ function Login(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/login`, {username, password})
+    axios.post(`${env.back_host}/login`, {username, password})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

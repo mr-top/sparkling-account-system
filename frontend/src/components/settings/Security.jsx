@@ -28,7 +28,7 @@ function Security (props) {
     }
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/settings/security`, {oldPassword, newPassword})
+    axios.post(`${env.back_host}/settings/security`, {oldPassword, newPassword})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

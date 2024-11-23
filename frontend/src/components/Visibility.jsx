@@ -15,7 +15,7 @@ function Visibility(props) {
     setMessage([false, 'Toggling...']);
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/settings/visible`)
+    axios.post(`${env.back_host}/settings/visible`)
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

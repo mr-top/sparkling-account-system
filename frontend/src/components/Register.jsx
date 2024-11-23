@@ -30,7 +30,7 @@ function Register(props) {
     setMessage([false, 'Making a request...']);
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/register`, {username, email, password})
+    axios.post(`${env.back_host}/register`, {username, email, password})
       .then(result => {
         if (result.data.success) {
           setMessage([true, result.data.msg]);

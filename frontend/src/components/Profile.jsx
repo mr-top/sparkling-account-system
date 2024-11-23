@@ -20,7 +20,7 @@ function Profile(props) {
     }
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/profile`, { inputId })
+    axios.post(`${env.back_host}/profile`, { inputId })
       .then(result => {
         if (result.data.success) {
           setUserInfo({ ...result.data.userInfo });

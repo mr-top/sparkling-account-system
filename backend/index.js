@@ -14,7 +14,7 @@ const app = express();
 
 app.use(morgan('common'));
 app.use(cors({
-  origin: `http://localhost:${env.front_port}`,
+  origin: `${env.front_host}`,
   methods: ['GET', 'POST'],
   credentials: true
 }))

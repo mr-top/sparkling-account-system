@@ -27,7 +27,7 @@ function Removal (props) {
     setIsLoading(true);
 
     axios.defaults.withCredentials = true;
-    axios.post(`http://localhost:${env.back_port}/settings/removal`, {username, password})
+    axios.post(`${env.back_host}/settings/removal`, {username, password})
       .then(result => {
         if (result.data.success || result.data.logout) {
           props.setAlert(result.data.logout ? 'Sorry. We had to log you out as the session expired' : 'Your account was removed');
