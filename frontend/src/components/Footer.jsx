@@ -20,9 +20,9 @@ function Footer() {
       </nav>
       <nav>
         <h6 className="footer-title">Legal</h6>
-        <Link to='/terms'></Link><p className="link link-hover">Terms of use</p>
-        <Link to='/privacy'></Link><p className="link link-hover">Privacy policy</p>
-        <Link to='/cookie'></Link><p className="link link-hover">Cookie policy</p>
+        <Link to='/terms'><p className="link link-hover">Terms of use</p></Link>
+        <Link to='/privacy'><p className="link link-hover">Privacy policy</p></Link>
+        <Link to='/cookie'><p className="link link-hover">Cookie policy</p></Link>
       </nav>
     </footer>
   )
