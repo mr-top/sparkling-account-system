@@ -16,7 +16,7 @@ app.use(morgan('common'));
 app.use(cors({
   origin: `${env.front_host}`,
   methods: ['GET', 'POST'],
-  credentials: true
+  credentials: true,
 }))
 app.use(express.json());
 app.use(session(
@@ -24,7 +24,6 @@ app.use(session(
     cookie: {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-      sameSite: true
     },
     name: 'test-sesh-id',
     resave: false,
