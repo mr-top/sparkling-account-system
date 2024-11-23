@@ -5,10 +5,7 @@ const env = process.env;
 async function query (statement, ...args) {
   try {
     const connection = new PgClient({
-      host: env.db_address,
-      database: env.db_name,
-      user: env.db_user,
-      password: env.db_pass
+      connectionString: env.db_address
     });
   
     await connection.connect()
