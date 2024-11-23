@@ -6,7 +6,7 @@ const morgan = require('morgan');
 
 const postgre = require('./lib/postgre');
 
-require('dotenv').config({path: '../.env'});
+require('dotenv').config({ path: '../.env' });
 const env = process.env;
 const port = env.back_port;
 
@@ -23,7 +23,7 @@ app.use(session(
   {
     cookie: {
       httpOnly: true,
-      maxAge: 1000 * 60 * 1 * 5, // 5 minute
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       sameSite: true
     },
     name: 'test-sesh-id',
@@ -39,16 +39,16 @@ app.use((req, res, next) => {
   next();
 });
 
-function requiresAuth (req, res, next) {
+function requiresAuth(req, res, next) {
   if (res.locals.signedIn) {
     next();
   } else {
-    res.json({logout: true, msg: 'Current session is not authorised'});
+    res.json({ logout: true, msg: 'Current session is not authorised' });
   }
 }
 
 app.post('/profile', async (req, res) => {
-  const {inputId} = req.body;
+  const { inputId } = req.body;
 
   const result = await postgre.user(inputId);
 
@@ -56,7 +56,7 @@ app.post('/profile', async (req, res) => {
 });
 
 app.post('/users', async (req, res) => {
-  const {page} = req.body;
+  const { page } = req.body;
 
   const result = await postgre.getUsers(page);
 
@@ -64,7 +64,7 @@ app.post('/users', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const {username, password} = req.body;
+  const { username, password } = req.body;
 
   const result = await postgre.login(username, password);
 
@@ -77,7 +77,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const {username, email, password} = req.body;
+  const { username, email, password } = req.body;
 
   const result = await postgre.register(username, email, password);
 
@@ -85,7 +85,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/settings/basic', requiresAuth, async (req, res) => {
-  const {username, description} = req.body;
+  const { username, description } = req.body;
 
   const result = await postgre.updateBasic(username, description, res.locals.userId);
 
@@ -93,7 +93,7 @@ app.post('/settings/basic', requiresAuth, async (req, res) => {
 });
 
 app.post('/settings/security', requiresAuth, async (req, res) => {
-  const {oldPassword, newPassword} = req.body;
+  const { oldPassword, newPassword } = req.body;
 
   const result = await postgre.updatePassword(oldPassword, newPassword, res.locals.userId);
 
@@ -107,7 +107,7 @@ app.post('/settings/visible', requiresAuth, async (req, res) => {
 });
 
 app.post('/settings/removal', requiresAuth, async (req, res) => {
-  const {username, password} = req.body;
+  const { username, password } = req.body;
 
   const result = await postgre.removeUser(username, password, res.locals.userId);
 
@@ -123,7 +123,7 @@ app.get('/settings/logout', requiresAuth, async (req, res) => {
   delete req.session.userId;
   delete req.session.signedIn;
 
-  res.json({logout: true, msg: 'Logged out'})
+  res.json({ logout: true, msg: 'Logged out' })
 });
 
 app.listen(port, () => {
